@@ -1,0 +1,27 @@
+<%= form_for(@book) do |f| %>
+  <% if @book.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@book.errors.count, "error") %> prohibited this book from being saved:</h2>
+
+      <ul>
+      <% @book.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </div>
+    <hr>
+    <%= f.fields_for :comments do |a| %>
+        <%= a.text_field :content %>
+        <%= link_to "削除",destroy_comment_book_path(@book.id,:comment_id => @book.comments[a.index].id) if @book.comments[a.index].id.present?%>
+    <% end %>
+  <div class="actions">
+    <%= f.submit %>
+    <%= f.submit "追加" %>
+  </div>
+<% end %>
